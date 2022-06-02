@@ -1,6 +1,7 @@
 const express = require('express');
 const myHelper = require('../util/helper')
 const underscore = require('underscore')
+const lodash= require('lodash')
 
 const router = express.Router();
 
@@ -14,7 +15,18 @@ router.get('/test-me', function (req, res) {
 });
 
 router.get('/hello', function (req, res) {
-   
+    const namesOfMonth=['january','february','march','april','may','june','july','august','september','october','november','december']
+   const chunkedMonth= lodash.chunk(namesOfMonth,4)
+   console.log(chunkedMonth)
+   const oddNumber=[1,3,5,7,9,11,13,15,17,19]
+   console.log(lodash.tail(oddNumber))
+   const arr1=[1,2,3];
+   const arr2=[2,3,4];
+   const arr3=[3,4,5];
+   const arr4=[4,5,6];
+   const arr5=[5,6,7];
+   console.log(lodash.union(arr1,arr2,arr3,arr4,arr5));
+   console.log(lodash.fromPairs([['horror','the shinning'],['drama','titanic'],['thriller','shutter island'],['fantasy','pans Labyrinth']]))
     res.send('Hello there!')
 });
 
@@ -35,6 +47,7 @@ router.get('/candidates/:canidatesName', function(req, res){
     console.log('Candidates name is '+req.params.canidatesName)
     res.send('Done')
 })
+
 
 
 module.exports = router;
