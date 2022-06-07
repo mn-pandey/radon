@@ -13,32 +13,15 @@ const bookList= async function (req, res) {
 }
 
 const getBookInYear= async function (req, res) {
-    let value=req.query.year
+    let value=req.body.year
     let allBooks= await BookModel.find({ year:value})
     res.send({msg: allBooks})
 }
 
 const getParticularBooks= async function (req, res) {
-if(req.query.bookName){
-    let book=req.query.bookName
-    let allBooks= await BookModel.find({ bookName:book})
-    res.send({msg: allBooks})
-}
-if(req.query.year){
-    let book=req.query.year
-    let allBooks= await BookModel.find({ year:book})
-    res.send({msg: allBooks})
-}
-if(req.query.authorName){
-    let book=req.query.authorName
-    let allBooks= await BookModel.find({ authorName:book})
-    res.send({msg: allBooks})
-}
-if(req.query.totalPages){
-    let book=req.query.totalPages
-    let allBooks= await BookModel.find({ totalPages:book})
-    res.send({msg: allBooks})
-}
+  let condition=req.body;
+  let allBooks=await BookModel.find(condition)
+  res.send({msg: allBooks})
  }
 
 
