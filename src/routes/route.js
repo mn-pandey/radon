@@ -5,13 +5,21 @@ const UserController= require("../controllers/userController")
 const BookController= require("../controllers/bookController")
 const commonMW = require ("../middlewares/commonMiddlewares")
 
-router.get("/test-me", function (req, res) {
+router.get("/first", function (req, res) {
     res.send("My first ever api!")
 })
 
+router.get("/second", function (req, res) {
+    res.send("My second api!")
+})
 
+router.get("/third", function (req, res) {
+    res.send("My third api!")
+})
 
-
+router.get("/forth", function (req, res) {
+    res.send("My fourth api!")
+})
 router.post("/createBook", BookController.createBook  )
 
 
