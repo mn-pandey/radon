@@ -1,4 +1,5 @@
 
+const { response } = require("express");
 const authorModel = require("../models/authorModel")
 const bookModel= require("../models/bookModel");
 const publisherModel = require("../models/publisherModel");
@@ -20,7 +21,7 @@ const publisherModel = require("../models/publisherModel");
         }
         let publisher=await publisherModel.findById(data.publisher)
         if(!publisher){
-            req.send("entered publisher id is not valid")
+            res.send("entered publisher id is not valid")
         }
         let savedata= await bookModel.create(data);
         res.send(savedata);
@@ -44,15 +45,18 @@ const getbooks= async function(req,res){
     res.send({allbooks})
 }
 const updatebookcover= async function(req,res){
-    let data=await publisherModel.find({name:{$in:["penguin","Harpercollins"]}}).select({_id:1});
+     let data=await publisherModel.find({name:{$in:["Penguin","Harper Collins"]}}).select({_id:1});
     let publisherId=data.map((x)=>x._id);
-    let book = await bookModel.find({publisher:{$in:publisherId}}).update({$set:{isHardCover:true}});
+    let book = await bookModel.find({publisher:{$in:publisherId}}).updateMany({$set:{isHardCover:true}});
     let allbooks=await bookModel.find({isHardCover:true}).populate("author").populate("publisher");
+    
+    console.log(book)
     res.send(allbooks)
+    
+   
 }
-const updateprice= async function (req,res){
-    let data= await bookModel.find({rating:{$gt:3.5}}).update({$set:{price:bookModel.price+10}})
-    res.send(data)
+const updateprice=async function(req,res){
+    
 }
 module.exports.createBook= createBook
 module.exports.getBooksData= getBooksData
