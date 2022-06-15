@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("../models/userModel");
-const middleWare=require("../middleware/auth")
+
 
 const createUser = async function (abcd, xyz) {
   //You can name the req, res objects anything.
@@ -74,11 +74,11 @@ const updateUser = async function (req, res) {
 // Return a different error message in both these cases
 
   let userId = req.params.userId;
-  let user = await userModel.findById(userId);
+  // let user = await userModel.findById(userId);
   //Return an error if no user with the given id exists in the db
-  if (!user) {
-    return res.send("No such user exists");
-  }
+  // if (!user) {
+  //   return res.send("No such user exists");
+  // }
 
   let userData = req.body;
   let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
@@ -92,10 +92,10 @@ const deleteUser =async function(req,res){
   //If no token is present in the request header return error
   // if (!token) return res.send({ status: false, msg: "token must be present" });
   let userId = req.params.userId;
-  let user = await userModel.findById(userId);
-  if(!user){
-    return res.send("no such user exits")
-  }
+  // let user = await userModel.findById(userId);
+  // if(!user){
+  //   return res.send("no such user exits")
+  // }
   let deletedData = await  userModel.findOneAndUpdate({_id:userId},{isDeleted:true},{new:true})
   res.send({ status : " deleted", deleteduser: deletedData})
 }
