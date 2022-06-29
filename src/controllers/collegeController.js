@@ -1,6 +1,7 @@
 const collegeModel = require("../Models/collegeModel")
 const internModel = require("../Models/internModel")
 
+// --------validation function declared------------
 const isValid = function (value) {
     if (typeof value === 'undefined' || value === null) return false
     if (typeof value === 'string' && value.trim().length === 0) return false
@@ -9,7 +10,7 @@ const isValid = function (value) {
 const isValidRequestBody = function (request) {
     return (Object.keys(request).length > 0)
 }
-
+// ----------- regex validation -------------------------------
 const nameRegex = /^[a-zA-Z\\s]{2,10}$/                 //     will not consider space between
 const fullNameRegex = /^[a-zA-Z ]{2,100}$/               //     consider space between
 
@@ -20,7 +21,9 @@ const createCollege = async function (req, res) {
     try {
         const collegeData = req.body
         const { name, fullName, logoLink } = collegeData
-        let invalid = "  "
+
+        //validation ---- for all above fields---------
+        let invalid = " "
         if (!isValidRequestBody(collegeData)) return res.status(400).send({ status: false, message: "No input by user." })
         if (!isValid(name) || !nameRegex.test(name)) invalid = invalid + " name "
 
@@ -30,10 +33,10 @@ const createCollege = async function (req, res) {
 
         if ((!isValid(name) || !nameRegex.test(name)) || (!isValid(fullName) || !fullNameRegex.test(fullName)) || (!isValid(logoLink) || !urlRegex.test(logoLink))) { return res.status(400).send({ status: false, msg: `Enter valid details in following field:${invalid}` }) }
 
-
+      // -------- checking college----already in collection or not 
         const college = await collegeModel.findOne({ name })
         if (college) return res.status(400).send({ status: false, message: `${name} is already registered.` })
-
+      //--------creating college documents-------------
         const newCollege = await collegeModel.create(collegeData)
         res.status(201).send({ status: true, message: "College created succesfully.", data: newCollege })
 

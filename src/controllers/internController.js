@@ -4,7 +4,7 @@ const internModel = require("../Models/internModel")
 const nameRegex = /^[a-zA-Z ]{2,45}$/                                //  /^[a-zA-Z\\s]*$/   <--- will not consider space between
 const emailRegex = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/
 const mobileRegex = /^[6-9]\d{9}$/                                 // /^[0-9]{10}$/  <--Only verify numbers
-
+const fullNameRegex = /^[a-zA-Z ]{2,100}$/  
 
 const isValid = function (value) {
     if (typeof value === 'undefined' || value === null) return false
@@ -22,40 +22,35 @@ const createIntern = async function (req, res) {
 
         const internData = req.body
         const { name, email, mobile, collegeName } = internData
-        let invalid =" ";
-        if (!isValidRequestBody(internData)) return res.status(400).send({ status: false, message: "No input by user.." })
+        
+        // validation for intern feilds ---------
+         let invalid = "  "
+        if (!isValidRequestBody(internData)) return res.status(400).send({ status: false, message: "No input by intern user." })
+        if (!isValid(name) || !nameRegex.test(name)) invalid = invalid + " name "
 
-        if (!isValid(name)&&!nameRegex.test(name)) return res.status(400).send({ status: false, message: "Intern's name is required." })
-        if (!isValid(email)) return res.status(400).send({ status: false, message: "Intern's email id is required." })
-        if (!isValid(mobile)) return res.status(400).send({ status: false, message: "Intern's mobile no is required." })
-        if (!isValid(collegeName)) return res.status(400).send({ status: false, message: "Intern's college name is required." })
+        if (!isValid(email) || !emailRegex.test(email)) invalid = invalid + ", email"
 
-        if (!nameRegex.test(name)) return res.status(400).send({ status: false, message: "Not a valid name." })
-        if (!emailRegex.test(email)) return res.status(400).send({ status: false, message: "Please provide a valid email." })
-        if (!mobileRegex.test(mobile)) return res.status(400).send({ status: false, message: "Please provide a valid mobile no. Mobile no should start 6-9." })
+        if (!isValid(mobile) || !mobileRegex.test(mobile)) invalid = invalid + ",Mobile "
+        // if (!isValid(collegeName) || !fullNameRegex.test(collegeName)) invalid = invalid + ",collegeName "
 
+        if ((!isValid(name) || !nameRegex.test(name)) || (!isValid(email) || !emailRegex.test(email)) || (!isValid(mobile) || !mobileRegex.test(mobile))) { return res.status(400).send({ status: false, msg: `Enter valid details in following field:${invalid}` }) }
+
+        //-----it is checking clg name is already present or not
         const getCollege = await collegeModel.findOne({ name: collegeName, isDeleted: false })
         if (!getCollege) return res.status(404).send({ status: false, message: "college not found." })
 
+        //-----it is checking email is already present or not
         const usedEmail = await internModel.findOne({ email })
         if (usedEmail) return res.status(400).send({ status: false, message: "Email id already exists. Please use another email id." })
 
+        //-----it is checking mobile is already present or not
         const usedMobile = await internModel.findOne({ mobile })
         if (usedMobile) return res.status(400).send({ status: false, message: "Mobile no already exists. Please use another mobile no.." })
 
         const collegeId = getCollege._id
         const newInternData = { name, email, mobile,collegeName, collegeId }
 
-        //OR
-        // internData["collegeId"]=collegeId
-    
-
-        // const Data = {
-        //     name: name,
-        //     email: email,
-        //     mobile: mobile,
-        //     collegeName: getCollege._id
-        // }
+        
 
         const newIntern = await internModel.create(newInternData)
         res.status(201).send({ status: true, message: "Internship application successful.", data: newIntern })
@@ -73,3 +68,13 @@ module.exports.createIntern = createIntern
 
 // {jkhh:hadjklfh}
 // [{ksdh},]
+//OR
+        // internData["collegeId"]=collegeId
+    
+
+        // const Data = {
+        //     name: name,
+        //     email: email,
+        //     mobile: mobile,
+        //     collegeName: getCollege._id
+        // }
