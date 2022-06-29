@@ -22,10 +22,10 @@ const createIntern = async function (req, res) {
 
         const internData = req.body
         const { name, email, mobile, collegeName } = internData
-
+        let invalid =" ";
         if (!isValidRequestBody(internData)) return res.status(400).send({ status: false, message: "No input by user.." })
 
-        if (!isValid(name)) return res.status(400).send({ status: false, message: "Intern's name is required." })
+        if (!isValid(name)&&!nameRegex.test(name)) return res.status(400).send({ status: false, message: "Intern's name is required." })
         if (!isValid(email)) return res.status(400).send({ status: false, message: "Intern's email id is required." })
         if (!isValid(mobile)) return res.status(400).send({ status: false, message: "Intern's mobile no is required." })
         if (!isValid(collegeName)) return res.status(400).send({ status: false, message: "Intern's college name is required." })

@@ -20,17 +20,18 @@ const createCollege = async function (req, res) {
     try {
         const collegeData = req.body
         const { name, fullName, logoLink } = collegeData
-
+        let invalid = "  "
         if (!isValidRequestBody(collegeData)) return res.status(400).send({ status: false, message: "No input by user." })
-        if (!isValid(name)) return res.status(400).send({ status: false, message: "College name is required." })
-        if (!isValid(fullName)) return res.status(400).send({ status: false, message: "College Full name is required." })
-        if (!isValid(logoLink)) return res.status(400).send({ status: false, message: "College Logo Link is required." })
+        if (!isValid(name) || !nameRegex.test(name)) invalid = invalid + " name "
 
-        if (!nameRegex.test(name)) return res.status(400).send({ status: false, message: "Not a valid name." })
-        if (!fullNameRegex.test(fullName)) return res.status(400).send({ status: false, message: "Not a valid Full name. Can only contains alphabets." })
-        if (!urlRegex.test(logoLink)) return res.status(400).send({ status: false, message: "Not a valid url." })
+        if (!isValid(fullName) || !fullNameRegex.test(fullName)) invalid = invalid + ", fullName "
 
-        const college = await collegeModel.findOne({name})
+        if (!isValid(logoLink) || !urlRegex.test(logoLink)) invalid = invalid + ", logoLink "
+
+        if ((!isValid(name) || !nameRegex.test(name)) || (!isValid(fullName) || !fullNameRegex.test(fullName)) || (!isValid(logoLink) || !urlRegex.test(logoLink))) { return res.status(400).send({ status: false, msg: `Enter valid details in following field:${invalid}` }) }
+
+
+        const college = await collegeModel.findOne({ name })
         if (college) return res.status(400).send({ status: false, message: `${name} is already registered.` })
 
         const newCollege = await collegeModel.create(collegeData)
@@ -74,3 +75,11 @@ const getCollegeDetails = async function (req, res) {
 
 module.exports.createCollege = createCollege
 module.exports.getCollegeDetails = getCollegeDetails
+
+// if (!isValidRequestBody(collegeData)) return res.status(400).send({ status: false, message: "No input by user." })
+//         if (!isValid(name)&&!nameRegex.test(name)) return res.status(400).send({ status: false, message: "College name should be valid and required" })
+//         // if (!nameRegex.test(name)) return res.status(400).send({ status: false, message: "Not a valid name." })
+//         if (!isValid(fullName)&&!fullNameRegex.test(fullName)) return res.status(400).send({ status: false, message: "College Full name should be valid and required" })
+//         // if (!fullNameRegex.test(fullName)) return res.status(400).send({ status: false, message: "Not a valid Full name. Can only contains alphabets." })
+//         if (!isValid(logoLink)&&!urlRegex.test(logoLink)) return res.status(400).send({ status: false, message: "College Logo Link should be valid and required" })
+//         // if (!urlRegex.test(logoLink)) return res.status(400).send({ status: false, message: "Not a valid url." })
