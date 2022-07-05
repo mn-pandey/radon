@@ -15,7 +15,7 @@ const authentication = async function (req, res, next) {
             return res.status(400).send({ status: false, msg: "Token must be present", });
         }
 
-        let decodedToken = jwt.verify(token, "author-blog")      // decoding token 
+        let decodedToken = jwt.verify(token,'author-blog')     // decoding token 
 
         if (!decodedToken) {
             return res.status(401).send({ status: false, msg: "Token is invalid" });
@@ -65,3 +65,8 @@ const authorization = async function (req, res, next) {
 
 module.exports.authentication = authentication
 module.exports.authorization = authorization
+
+
+
+
+

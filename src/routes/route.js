@@ -11,11 +11,11 @@ router.post('/blogs', mid.authentication, BlogController.createBlog)  // post ap
 
 router.get('/blogs',mid.authentication, BlogController.getblog)   // get api to get the blogs
 
-router.put('/blogs/:blogId', mid.authentication, mid.authorization, BlogController.updateblog)    // put api to update blogs
+router.put('/blogs/:blogId', mid.authentication, BlogController.updateblog)    // put api to update blogs
 
 router.delete('/blogs/:blogId', mid.authentication, BlogController.deleteById)   // delete api to delete blog by id
 
-router.delete('/blogs', mid.authentication, mid.authorization, BlogController.deleteBlogByquery)  // delete api to delete blog by query
+router.delete('/blogs', mid.authentication, BlogController.deleteBlogByquery)  // delete api to delete blog by query
 
 router.post('/login', AuthorController.loginAuthor)   // post api to login author
 

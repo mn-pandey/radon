@@ -132,3 +132,15 @@ Refer below sample
 
 
 
+
+
+
+
+
+fucnation (a,b){
+  let c =a+b;
+  return c;
+}
+
+
+soltution()
