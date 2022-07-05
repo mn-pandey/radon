@@ -12,7 +12,7 @@ const isValidRequestBody = function (request) {
 }
 // ----------- regex validation -------------------------------
 const nameRegex = /^[a-zA-Z\\s]{2,10}$/                 //     will not consider space between
-const fullNameRegex = /^[a-zA-Z ]{2,100}$/               //     consider space between
+const fullNameRegex = /^[a-zA-Z\s]{2,100}$/               //     consider space between
 
 const urlRegex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
 

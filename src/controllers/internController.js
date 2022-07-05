@@ -4,7 +4,7 @@ const internModel = require("../Models/internModel")
 const nameRegex = /^[a-zA-Z ]{2,45}$/                                //  /^[a-zA-Z\\s]*$/   <--- will not consider space between
 const emailRegex = /^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/
 const mobileRegex = /^[6-9]\d{9}$/                                 // /^[0-9]{10}$/  <--Only verify numbers
-const fullNameRegex = /^[a-zA-Z ]{2,100}$/  
+ 
 
 const isValid = function (value) {
     if (typeof value === 'undefined' || value === null) return false
@@ -31,7 +31,7 @@ const createIntern = async function (req, res) {
         if (!isValid(email) || !emailRegex.test(email)) invalid = invalid + ", email"
 
         if (!isValid(mobile) || !mobileRegex.test(mobile)) invalid = invalid + ",Mobile "
-        // if (!isValid(collegeName) || !fullNameRegex.test(collegeName)) invalid = invalid + ",collegeName "
+     
 
         if ((!isValid(name) || !nameRegex.test(name)) || (!isValid(email) || !emailRegex.test(email)) || (!isValid(mobile) || !mobileRegex.test(mobile))) { return res.status(400).send({ status: false, msg: `Enter valid details in following field:${invalid}` }) }
 

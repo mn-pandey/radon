@@ -1,9 +1,5 @@
 const mongoose = require("mongoose")
 
-let validateUrl = function (logoLink) {
-    urlRegex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
-    return urlRegex.test(logoLink)
-}
 
 const collegeSchema = mongoose.Schema({
 
@@ -22,8 +18,7 @@ const collegeSchema = mongoose.Schema({
     logoLink: {
         type: String,
         required: "Logo link is required.",
-        trim: true,
-        validate: [validateUrl, "Please Provide valid url."]
+        trim: true
 
 
     },
